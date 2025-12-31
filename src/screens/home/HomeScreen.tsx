@@ -18,9 +18,24 @@ const HomeScreen = () => {
   const navigation = useNavigation<any>();
   const [notes, setNotes] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [userName, setUserName] = useState<string>('User');
+
+  const fetchUser = async () => {
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+
+    if (error) return;
+
+    if (user?.user_metadata?.display_name) {
+      setUserName(user.user_metadata.display_name);
+    }
+  };
 
   useEffect(() => {
     fetchNotes();
+    fetchUser();
   }, []);
 
   const fetchNotes = async () => {
@@ -72,7 +87,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="Notes" showLogout onLogout={handleLogout} />
+      <Header title={`Hi, ${userName}`} showLogout onLogout={handleLogout} />
 
       <FlatList
         data={notes}
@@ -125,8 +140,8 @@ const styles = StyleSheet.create({
   },
   fab: {
     position: 'absolute',
-    bottom: 24,
-    right: 24,
+    bottom: 60,
+    right: 40,
     backgroundColor: COLORS.primary,
     width: 56,
     height: 56,

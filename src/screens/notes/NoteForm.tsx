@@ -79,11 +79,11 @@ const NoteForm = () => {
         <View style={styles.card}>
           <Label
             labelContent={isEdit ? 'Edit Note' : 'New Note'}
-            size={26}
+            size={28}
             family={FONTS.GilroyBold}
             color={COLORS.textSecondary}
             align="center"
-            mb={24}
+            mb={32}
           />
 
           <TextBox
@@ -128,16 +128,21 @@ const styles = StyleSheet.create({
   },
   scroll: {
     flexGrow: 1,
-    justifyContent: 'center',
     padding: 24,
+    justifyContent: 'center',
   },
   card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 24,
-    padding: 24,
-    elevation: 1,
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    borderRadius: 32,
+    paddingHorizontal: 32,
+    paddingTop: 40,
+    paddingBottom: 32,
+    shadowOpacity: 0.12,
+    shadowRadius: 20,
+    elevation: 2,
+    marginBottom: 90,
   },
   input: {
-    marginBottom: 16,
+    marginBottom: 20,
   },
 });
