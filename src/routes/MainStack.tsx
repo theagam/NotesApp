@@ -1,32 +1,32 @@
 import { StatusBar } from 'react-native';
-import AuthStack from './AuthStack';
 import { NavigationContainer } from '@react-navigation/native';
 
+import AuthStack from './AuthStack';
 import HomeStack from './HomeStack';
-import { navigationStateType } from '../context/AuthContext';
 import { navigationRef } from './RootNavigation';
+
 import useUser from '../hooks/useUser';
 import Loader from '../components/Loader/Loader';
 
 const MainStack = () => {
-  const { navigationState } = useUser();
+  const { user, loading } = useUser();
 
   const renderStack = () => {
-    switch (navigationState) {
-      case navigationStateType.AUTH:
-        return <AuthStack />;
+    switch (true) {
+      case loading:
+        return <Loader />;
 
-      case navigationStateType.HOME:
+      case !!user:
         return <HomeStack />;
 
       default:
-        <Loader />;
+        return <AuthStack />;
     }
   };
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <StatusBar barStyle="light-content" translucent={true} />
+      <StatusBar barStyle="light-content" translucent />
       {renderStack()}
     </NavigationContainer>
   );

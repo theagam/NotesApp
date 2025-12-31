@@ -6,7 +6,7 @@ import {
   View,
   StyleSheet,
 } from 'react-native';
-import { FONTS } from '../../constants/theme';
+import { COLORS, FONTS } from '../../constants/theme';
 
 interface AppButtonProps {
   title: any;
@@ -23,7 +23,7 @@ const AppButton: React.FC<AppButtonProps> = ({
   loading = false,
   containerStyle,
 }) => {
-  const Button = (
+  return (
     <TouchableOpacity
       activeOpacity={0.7}
       disabled={disabled || loading}
@@ -50,6 +50,7 @@ export default AppButton;
 const styles = StyleSheet.create({
   shadowWrapper: {
     borderRadius: 10,
+    backgroundColor: COLORS.primary,
   },
 
   clipWrapper: {
