@@ -1,5 +1,5 @@
 export const COLORS = {
-    primary: '#0791D0', // Navy Blue - Headers, buttons, primary actions
+    primary: '#10B981', // Navy Blue - Headers, buttons, primary actions
       primary2: "#F3F3F3",
     secondary: '#10B981', // Emerald Green - Accents, success states, secondary buttons
     background: '#F9FAFB', // Soft White - Main backgrounds, cards

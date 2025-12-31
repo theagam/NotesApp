@@ -74,6 +74,7 @@ const TextBox = <T extends FieldValues>({
               <TextInput
                 style={[
                   styles.input,
+                  multiline && styles.multilineInput,
                   errors?.[name] && styles.inputError,
                   disabled && styles.disabledInput,
                   typePassword && styles.passwordInput,
@@ -178,5 +179,9 @@ const styles = StyleSheet.create({
   disabledInput: {
     backgroundColor: '#F0F0F0',
     color: '#A0A0A0',
+  },
+  multilineInput: {
+    minHeight: 120,
+    paddingTop: 12,
   },
 });
