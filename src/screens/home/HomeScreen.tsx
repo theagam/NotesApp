@@ -8,6 +8,7 @@ import {
   Alert,
   Modal,
   ScrollView,
+  TextInput,
 } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -30,6 +31,8 @@ const HomeScreen = () => {
   const [selectedNote, setSelectedNote] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
 
+  const [searchText, setSearchText] = useState('');
+
   useFocusEffect(
     useCallback(() => {
       fetchNotes();
@@ -37,7 +40,7 @@ const HomeScreen = () => {
     }, []),
   );
 
-  //fetch user
+  // fetch user
   const fetchUser = async () => {
     const { data } = await supabase.auth.getUser();
     if (data?.user?.user_metadata?.display_name) {
@@ -45,7 +48,7 @@ const HomeScreen = () => {
     }
   };
 
-  //fetch notees
+  // fetch notes
   const fetchNotes = async () => {
     try {
       setLoading(true);
@@ -58,7 +61,7 @@ const HomeScreen = () => {
     }
   };
 
-  //delete fun
+  // delete note
   const handleDelete = (id: string) => {
     Alert.alert('Delete Note', 'Are you sure?', [
       { text: 'Cancel', style: 'cancel' },
@@ -79,7 +82,7 @@ const HomeScreen = () => {
     ]);
   };
 
-  //logout
+  // logout
   const handleLogout = () => {
     Alert.alert('Logout', 'Are you sure?', [
       { text: 'Cancel', style: 'cancel' },
@@ -92,6 +95,7 @@ const HomeScreen = () => {
       },
     ]);
   };
+
   const formatDateTime = (dateString: string) => {
     return new Date(dateString).toLocaleString('en-IN', {
       timeZone: 'Asia/Kolkata',
@@ -104,7 +108,12 @@ const HomeScreen = () => {
     });
   };
 
-  //card
+  // client-side search
+  const filteredNotes = notes.filter(note =>
+    note.title?.toLowerCase().includes(searchText.toLowerCase()),
+  );
+
+  // card
   const renderItem = ({ item }: any) => (
     <TouchableOpacity
       style={styles.card}
@@ -124,19 +133,34 @@ const HomeScreen = () => {
     <View style={styles.container}>
       <Header title={`Hi, ${userName}`} showLogout onLogout={handleLogout} />
 
+      <View style={styles.searchContainer}>
+        <Ionicons name="search-outline" size={18} color="#64748B" />
+        <TextInput
+          placeholder="Search by title..."
+          placeholderTextColor="#94A3B8"
+          value={searchText}
+          onChangeText={setSearchText}
+          style={styles.searchInput}
+        />
+      </View>
+
       <FlatList
-        data={notes}
+        data={filteredNotes}
         keyExtractor={item => item.id}
         renderItem={renderItem}
         refreshing={loading}
         onRefresh={fetchNotes}
         contentContainerStyle={[
-          notes.length === 0 && styles.emptyContainer,
+          filteredNotes.length === 0 && styles.emptyContainer,
           { marginTop: 10 },
         ]}
         ListEmptyComponent={
           !loading ? (
-            <Text style={styles.emptyText}>No notes yet. Add one!</Text>
+            <Text style={styles.emptyText}>
+              {searchText
+                ? 'No matching notes found'
+                : 'No notes yet. Add one!'}
+            </Text>
           ) : null
         }
       />
@@ -187,10 +211,8 @@ const HomeScreen = () => {
               <Text style={styles.modalContent}>{selectedNote?.content}</Text>
             </ScrollView>
 
-            {/* Divider */}
             <View style={styles.metaDivider} />
 
-            {/* Meta info */}
             <View style={styles.metaContainer}>
               <Text style={styles.metaText}>
                 Created • {formatDateTime(selectedNote?.created_at)}
@@ -221,6 +243,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8FAFC',
+  },
+
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    marginHorizontal: 16,
+    marginTop: 12,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    height: 44,
+    elevation: 1,
+  },
+
+  searchInput: {
+    flex: 1,
+    marginLeft: 8,
+    fontFamily: FONTS.GilroyRegular,
+    fontSize: 14,
+    color: '#0F172A',
   },
 
   card: {
@@ -289,8 +331,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 20,
     padding: 20,
-    maxHeight: '80%', // IMPORTANT for scroll
+    maxHeight: '80%',
   },
+
   modalHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -315,21 +358,6 @@ const styles = StyleSheet.create({
     color: '#334155',
   },
 
-  closeBtn: {
-    marginTop: 20,
-    alignSelf: 'center',
-  },
-
-  closeText: {
-    fontFamily: FONTS.GilroyBold,
-    color: COLORS.primary,
-  },
-  updatedModalText: {
-    fontSize: 13,
-    color: '#64748B',
-    fontFamily: FONTS.GilroyMedium,
-    marginBottom: 12,
-  },
   metaDivider: {
     height: 1,
     backgroundColor: '#E5E7EB',

@@ -16,6 +16,8 @@ import { COLORS, FONTS } from '../../constants';
 import { createNote, updateNote } from '../../services/notes.service';
 import TextBox from '../../components/Label/TextBox';
 import Header from '../../components/Header/Header';
+import renderToast from '../../helper/renderToast';
+import { useToast } from 'react-native-toast-notifications';
 
 type FormData = {
   title: string;
@@ -25,6 +27,7 @@ type FormData = {
 const NoteForm = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
+  const toast = useToast();
 
   const editingNote = route.params?.note ?? null;
   const isEdit = Boolean(editingNote);
@@ -62,7 +65,7 @@ const NoteForm = () => {
 
       navigation.goBack();
     } catch (err: any) {
-      Alert.alert('Error', err?.message || 'Something went wrong');
+      renderToast(toast, err?.message || 'Something went wrong', 'danger');
     } finally {
       setLoading(false);
     }
