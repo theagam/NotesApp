@@ -43,7 +43,7 @@ export const COLORS = {
 
 
 // Gradient Colors
-const primaryGradient = ['#0489C9', '#0CA4E8', '#10B2EC'];
+const primaryGradient = ['#10B981', '#059669'];
 const secondaryGradient = ['#10B981', '#059669']; // Emerald Green to Teal
 const highlightGradient = ['#60A5FA', '#3B82F6']; // Light Blue to Sky Blue
 const neutralGradient = ['#F9FAFB', '#E5E7EB']; // Soft White to Light Gray

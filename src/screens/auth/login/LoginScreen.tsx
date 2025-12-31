@@ -43,6 +43,7 @@ const LoginScreen: React.FC<any> = ({ navigation }) => {
     try {
       setLoading(true);
       await signIn(data.email.trim(), data.password);
+      renderToast(toast, 'Login successful', 'success');
     } catch (err: any) {
       renderToast(toast, err?.message || 'Invalid email or password', 'danger');
     } finally {

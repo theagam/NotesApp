@@ -73,7 +73,7 @@ const NoteForm = () => {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <Header title="Add Note" showBack />
+      <Header title={isEdit ? 'Update Note' : 'Add Note'} showBack />
 
       <ScrollView contentContainerStyle={styles.scroll}>
         <View style={styles.card}>

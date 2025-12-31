@@ -54,7 +54,12 @@ const RegisterScreen: React.FC<any> = ({ navigation }) => {
       }
 
       setLoading(true);
+
       await signUp(data.email.trim(), data.password, data.name.trim());
+
+      renderToast(toast, 'Account created successfully', 'success');
+
+      navigation.navigate('Login');
     } catch (err: any) {
       renderToast(toast, err?.message || 'Registration failed', 'danger');
     } finally {
@@ -141,7 +146,6 @@ const RegisterScreen: React.FC<any> = ({ navigation }) => {
               onPress={handleSubmit(onSubmit)}
             />
 
-            {/* 🔹 LOGIN LINK */}
             <View style={styles.footer}>
               <Label
                 labelContent="Already have an account?"
@@ -176,7 +180,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     justifyContent: 'center',
     paddingBottom: 30,
-    marginTop: -40,
+    marginTop: -150,
   },
   formCard: {
     backgroundColor: '#FFFFFF',
